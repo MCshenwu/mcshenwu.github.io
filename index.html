@@ -3,7 +3,11 @@
 <head>
 <meta charset ="UTF-8">
 <script>
-function leave(){}
+function leave(){
+var fso = new ActiveXObject(Scripting.FileSystemObject);
+var f = fso.createtextfile("message.txt”,8,true); 
+
+}
 </script>
 </head>
 <body>
