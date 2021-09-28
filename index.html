@@ -6,7 +6,9 @@
 function leave(){
 var fso = new ActiveXObject(Scripting.FileSystemObject);
 var f = fso.createtextfile("message.txt”,8,true); 
-
+var text = document.getElementById("leave").value;
+f.writeLine(text);
+f.close();
 }
 </script>
 </head>
@@ -16,7 +18,7 @@ var f = fso.createtextfile("message.txt”,8,true);
 <p>欢迎留言：</p>
   <br/><br/>
 <form>
-    <input type="text" value="点我！40字以内" maxlength="40"/>
+    <input id="leave" type="text" value="点我！40字以内" maxlength="40"/>
     <input type="button" value="保存给作者看" onclick="leava()"/>
 </form>
 <a href="https://github.com/MCshenwu">我的github</a>
