@@ -7,12 +7,12 @@
 <script>
 function leave(){
 try{
-var fso = new ActiveXObject(Scripting.FileSystemObject);
-var f = fso.createtextfile("https://MCshenwu.github.io/message.txt”,8,true); 
+//var fso = new ActiveXObject(Scripting.FileSystemObject);
+//var f = fso.createtextfile("https://MCshenwu.github.io/message.txt”,8,true); 
 var text = document.getElementById("leave").value;
-f.writeLine(text);
-f.close();
-alert("留言成功");
+//f.writeLine(text);
+//f.close();
+alert(text);
 }catch(err){
 alert(err.message);
 }
