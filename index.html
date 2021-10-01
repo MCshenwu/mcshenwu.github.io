@@ -6,12 +6,16 @@
 <meta charset ="UTF-8">
 <script>
 function leave(){
+try{
 var fso = new ActiveXObject(Scripting.FileSystemObject);
 var f = fso.createtextfile("https://MCshenwu.github.io/message.txt”,8,true); 
 var text = document.getElementById("leave").value;
 f.writeLine(text);
 f.close();
 alert("留言成功");
+}catch(err){
+alert(err.message);
+}
 }
 </script>
 </head>
@@ -21,7 +25,7 @@ alert("留言成功");
   <br/><br/>
 <form>
     <input id="leave" type="text" value="点我！40字以内" maxlength="40"/>
-    <input type="button" value="保存给作者看" onclick="alert('留言功能尚未实装哦')"/>
+    <input type="button" value="保存给作者看" onclick="leave()"/>
 </form>
 <a href="https://github.com/MCshenwu">我的github</a>
 </body>
