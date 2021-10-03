@@ -7,7 +7,16 @@
 <script>
 function leave(){
 var x = document.getElementById("leave").value;
-alert("因为这个人太懒，留言并没有卵用");
+var fso;
+try { 
+fso=new ActiveXObject("Scripting.FileSystemObject"); 
+} catch (e) { 
+alert("当前浏览器不支持");
+return;
+}
+var f1 = fso.createtextfile("message.txt",8,true);
+f1.writeLine(x);
+alert("留言成功！");
 }
 </script>
 </head>
