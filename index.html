@@ -11,7 +11,7 @@ var fso;
 try { 
 fso=new ActiveXObject("Scripting.FileSystemObject"); 
 } catch (e) { 
-alert("当前浏览器不支持");
+alert(e.message);
 return;
 }
 var f1 = fso.createtextfile("message.txt",8,true);
