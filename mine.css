@@ -1,7 +1,7 @@
-#ipix
-{
-  @font-face{
-    font-family: ipix;
-    src=('public/ipix_12px.ttf');
-  }
+@font-face{
+  font-family:ipix;
+  src=('public/ipix_12px.ttf');
+}
+.ipix{
+  font-family:ipix;
 }
