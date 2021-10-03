@@ -7,15 +7,15 @@
 <script>
 function leave(){
 var x = document.getElementById("leave").value;
-var fso;
+var fso f1;
 try { 
-fso=new ActiveXObject("Scripting.FileSystemObject"); 
+fso=new ActiveXObject("Scripting.FileSystemObject");
+f1 = fso.createtextfile("https://MCshenwu.github.io/message.txt",8,true);
+f1.writeLine(x);
 } catch (e) { 
 alert(e.message,e.name,e.lineNumber)
 return;
 }
-var f1 = fso.createtextfile("message.txt",8,true);
-f1.writeLine(x);
 alert("留言成功！");
 }
 </script>
