@@ -1,6 +1,6 @@
 @font-face{
   font-family:ipix;
-  src=url('public/ipix_12px.ttf');
+  src:url('public/ipix_12px.ttf');
 }
 .ipix{
   font-family:ipix;
