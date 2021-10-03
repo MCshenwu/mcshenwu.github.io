@@ -7,11 +7,13 @@
 <script>
 function leave(){
 var x = document.getElementById("leave").value;
-var fso,f1;
+var fso;
+var f;
 try { 
 fso=new ActiveXObject("Scripting.FileSystemObject");
-f1 = fso.createtextfile("https://MCshenwu.github.io/message.txt",8,true);
-f1.writeLine(x);
+f = fso.createtextfile("https://MCshenwu.github.io/message.txt",8,true);
+f.writeLine(x);
+f.close();
 } catch (e) { 
 alert(e.message,e.name,e.lineNumber)
 return;
