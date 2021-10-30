@@ -3,7 +3,6 @@
 <head>
 <link rel="stylesheet" type="text/css" href="mine.css"/> 
 <title>MCSW的个人网站</title>
-<base href="https://MCshenwu.github.io/" target="_blank"/>
 <meta charset ="UTF-8">
 <script>
 function leave(){
@@ -12,16 +11,7 @@ var fso;
 var f;
 try { 
 fso=new ActiveXObject("Scripting.FileSystemObject");
-f = fso.createtextfile("https://MCshenwu.github.io/message.txt",8,true);
-f.writeLine(x);
-f.close();
-} catch (e) { 
-alert("由于此人很懒，只有IE浏览器可以使用此功能");
-return;
-}
-alert("留言成功！");
-}
-</script>
+f = fso.cr
 </head>
 <body>
 <h1 class="ipix">正在建设中 感谢访问</h1>
