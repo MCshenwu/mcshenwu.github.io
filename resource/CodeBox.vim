@@ -1,11 +1,15 @@
-"inoremap <CR> =NextIndent(&filetype)
+inoremap <expr> <CR> NextIndent(&filetype)
+
 if !exists("*NextIndent()")
 function NextIndent(type)
 	if type ==# "java"
+		return <CR>
 	endif
 endfunction
 endif
-let s:java_workplace=$HOME . '/workplace/Java/'
+
+let s:src='/src/'
+
 if !exists("*GetPackage")
 function GetPackage()
 	if &filetype ==# "java"
@@ -19,6 +23,7 @@ function GetPackage()
 	return test_null_string()
 endfunction
 endif
+
 if !exists("*GetQualified")
 function GetQualified()
 	if empty(GetPackage())
@@ -28,7 +33,9 @@ function GetQualified()
 	endif
 endfunction
 endif
+
 au FileType java call JavaInit()
+
 if !exists("*JavaInit")
 function JavaInit()
 	let b:qualified=GetQualified()
@@ -53,8 +60,8 @@ function AddHead()
 		call append(1,"* @author MCSW")
         call append(2,"* @version 1.0")
 		call append(3,"*/")
-		if expand('%:p:h') =~ s:java_workplace . 'src/.*/.*'
-			let b:package = substitute(strcharpart(expand('%:p:h'),len($HOME)+20),'/','.',"g")
+		if expand('%:p:h') =~ s:src
+			let b:package = Package()
 			call append(4,"package " . b:package . ";")
 		endif
 		call append(5,"public class " . expand('%:t:r') . '{')
@@ -77,28 +84,21 @@ function Run(...)
 	let R_option = ""
 	if &filetype ==# "sh"
 		for Option in a:000
-			let R_option .= " " . option
+			let R_option .= " " . Option
 		endfor
 		if strpart(getfperm(expand('%:p')),2,1) ==# "-"
 			call setfperm(expand('%:p'),"rwx" . strpart(getfperm(expand('%:p')),3))
 		endif
 		echo system(expand('%:p') . R_option)
 	elseif &filetype ==# "java"
-		let C_option = " -g"
 		for Option in a:000
 			if strpart(Option,0,2) ==# "@C"
 				let C_option .= " " . Option
 			else
-				let R_option .= " " . a:000
+				let R_option .= " " . Option
 			endif
 		endfor
-		echo "*编译中"
-		if expand('%:p') =~ s:java_workplace . 'src/'
-			let result = system("javac " . expand('%:p') .  C_option . " -d " . s:Java_Workplace . 'out/production ; echo $?')
-		else
-			let result = system('javac ' . expand('%:p') . C_option . ' -d . ; echo $?')
-		endif
-		echo strpart(result,0,len(result)-2)
+		
 		if strpart(result,len(result)-2,1) != 0
 			echo '*编译出错'
 		else
@@ -111,8 +111,18 @@ function Run(...)
 	endif
 endfunction
 endif
+command -nargs=* Compile call Compile(<f-args>)
 if !exists("*Compile")
-function Compile()
-
-endfunction
+function Compile(...)
+	if &filetype ==# "sh"
+		echo "*不需要编译的代码类型"
+		return 0
+	endif
+	let C_option = " -g"
+	for Option in a:000
+		let C_option .= ' ' . Option
+	endfor
+	if &filetype ==# "java"
+		let result = system('javac ' . expand('%:p') . ' -d ' . )
+	endif
 endif
