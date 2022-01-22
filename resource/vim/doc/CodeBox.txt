@@ -1,0 +1,44 @@
+CodeBox.txt	For Vim version 8.2	Last change: 2022 Jan 21
+CodeBox 帮助文档
+作者:MCSW
+----------前言----------
+Vim 是Linux 极为好用的文本代码编辑器。
+本插件是一个菜鸟写的(o^^o)，主要方便个人写代码时实用
+如果你喜欢或者想学习，免费下载，谢绝商用		（其实不会有人稀罕的
+----------正文----------
+本插件目前只支持基本Java功能
+
+1 函数
+用法             结果    说明
+GetPackage()    String     返回pakcage值
+GetQualified()  String     .java文件返回全限定类名
+Run(...)         Null      运行文件并输出结果
+Compile(...)    String	   编译文件并输出结果
+AddHead()        Null      添加文件头
+
+AddHead()
+给文件添加可能需要的头部。
+	.sh:	s:default_sh_head
+	.java:	/**
+			* s:default_javadoc
+			*/
+			public class FILENAME{
+			<TAB>
+			}
+Compile(...)
+编译文件，返回值视文件类型而定。
+	.java:		将参数作为编译参数;编译成功则返回 -d/-cp 选项的值，否则返回空字符串。
+	其他文件:	返回空字符串
+	注意：编译命令是在Shell执行的，因此VIM可能会卡住直到编译结束
+GetPackage()
+如果文件是.java文件，会逐行寻找package语句。只有找到了语法正确且在第一句的package才返回值。否则返回空字符串。
+GetQualified()
+返回.java文件的全限定类名。实际返回GetPackage().文件名
+Run(...)
+编译并运行文件。
+	.sh:	打开Shell并执行；权限不够时会尝试更改文件权限
+	.java:	执行javac和java。
+			以@C开头的参数会作为javac参数；以@J开头则会作为java参数；
+			剩余参数(包括'@C'和'@J')会作为程序参数
+
+vim:tw=78:ts=4:ft=help:

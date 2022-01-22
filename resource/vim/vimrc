@@ -13,15 +13,18 @@ inoremap { {}<LEFT>
 inoremap " ""<LEFT>
 inoremap ' ''<LEFT>
 "设置括号 引号自动补全
-au BufWritePost .vimrc exe "source " . expand('%:p')
-".vimrc保存自动生效
 set whichwrap=b,s,<,>,[,]
-"设置光标左右移动可换行
-au BufReadPost *
-\ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-\ |   exe "normal! g`\""
-\ | endif
-"打开文件回到最后修改处
+"设置光标左右移动可换行i
+augroup mine
+	autocmd!
+	au BufWritePost .vimrc exe "source " . expand('%:p')
+	".vimrc保存自动生效
+	au BufReadPost *
+	\ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+	\ |   exe "normal! g`\""
+	\ | endif
+	"打开文件回到最后修改处
+augroup END
 set ls=2
 "lineststatus 永远显示状态行
 set showcmd
