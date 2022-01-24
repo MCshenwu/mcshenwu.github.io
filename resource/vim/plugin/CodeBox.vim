@@ -55,7 +55,6 @@ function GetPackage()
 				endif
 			elseif statu == 1
 				if line =~ '\*/'
-					echo "*/"
 					let statu = 0
 					let temp = line[matchend(line,'\*/'):]
 				endif
@@ -175,15 +174,15 @@ function Run(...)
 			endif
 		endif
 		" 执行
-		execute "! echo \"*JVM 启动\" ; java -cp " . result . ' ' . default_java_args . J_option . GetQualified() . R_option . " ; sleep 1"
+		execute "! echom \"*JVM 启动\" ; java -cp " . result . ' ' . s:default_java_args . J_option . GetQualified() . R_option . " ; sleep 1"
 		
 	else
-		echo "Unknown Format"
+		echo "*未知文件格式"
 	endif
 endfunction
 endif
 
-command! -nargs=* Compile call Compile(<f-args>))
+command! -nargs=* Compile call Compile(<f-args>)
 if !exists("*Compile")
 function Compile(...)
 	if &filetype ==# "java"
@@ -197,7 +196,7 @@ function Compile(...)
 			else
 				echo "*您的package值 [". GetPackage() ."] 与实际目录 [" .expand('%:p:h'). "] 不符！输入回车在本目录下编译"
 				if getchar() != 13
-					echo "*取消编译"
+					echom "*取消编译"
 					return test_null_string()
 				endif
 				let classpath = expand('%:p:h')
@@ -210,13 +209,14 @@ function Compile(...)
 			let C_option .= ' ' . Option
 		endfor
 		" 编译并输出
-		let result = system('javac '. s:default_javac_args . C_option . expand('%:p')' ; echo $?')
-		echo result[0:-2]
+		let result = system('javac'. s:default_javac_args . C_option . ' ' . expand('%:p') . ' ; echo $?')
+		echom result[0:-3]
 		" 编译正常则返回类路径
 		if result[-2:-2] == 0
+			echom "*编译完成"
 			return classpath
 		endif
-		echo "*编译错误"
+		echom "*编译错误"
 		return test_null_string()
 	else
 		echo "*不需要编译的代码"
