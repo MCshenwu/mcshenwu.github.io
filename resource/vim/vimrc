@@ -18,6 +18,8 @@ no! ' ''<LEFT>
 "设置括号 引号自动补全
 set whichwrap=b,s,<,>,[,]
 "设置光标左右移动可换行i
+filetype indent on
+"表达式缩进
 augroup mine
 	autocmd!
 	au BufWritePost .vimrc exe "source " . expand('%:p')
