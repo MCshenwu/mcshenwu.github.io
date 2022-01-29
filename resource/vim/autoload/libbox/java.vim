@@ -1,8 +1,8 @@
-" Vim plugin for java
+" Vim library for java [with CodeBox plugin]
 " Version : 0.1
 " Maintainer : MCshenwu (@MCshenwu)
 " Last Change : 2022.1.21
-" URL : https://gitee.com/mcsw/MCshenwu.github.io/resource/vim/plugin/JavaBox.vim
+" URL : https://gitee.com/mcsw/MCshenwu.github.io/resource/vim/autoload/libbox/java.vim
 "
 
 " 自定义的脚本参数
@@ -16,7 +16,7 @@ let s:default_javadoc = ["@author MCSW","@version 1.0",]
 " Java关键字
 let s:JAVA_KEYWORD = ["if","else","for","while","do","switch","case","default","try","catch","finally","break","continue","return","class","public","protected","private","static","enum","interface","extends","implements","int","short","byte","long","char","boolean","new","package","import","void","instanceof","throws","throws","abstract","float","double","native","this","super","synchronized","transient","assert","final","strictfp","goto","const","volatile"]
 
-function! GetPackage()
+function libbox#java#GetPackage()
 	if &filetype ==# "java"
 		" 每行搜索package语句
 		let statu = 0
@@ -50,7 +50,7 @@ function! GetPackage()
 	return test_null_string()
 endfunction
 
-function! GetQualified()
+function libbox#java#GetQualified()
 	if empty(GetPackage())
 		return expand('%:r')
 	else
@@ -58,13 +58,7 @@ function! GetQualified()
 	endif
 endfunction
 
-au FileType java call JavaInit()
-
-function! JavaInit()
-	let b:qualified=GetQualified()
-endfunction
-
-function! AddJavaHead()
+function libbox#java#AddHead()
 	if &filetype !=# 'java'
 		return
 	endif
@@ -83,7 +77,7 @@ function! AddJavaHead()
 	call cursor(number+3,1)
 endfunction
 
-function! JavaCompile(...)
+function libbox#java#Compile(...)
 	if &filetype !=# "java"
 		return test_null_string()
 	endif
@@ -110,7 +104,7 @@ function! JavaCompile(...)
 		let C_option .= ' ' . Option
 	endfor
 	" 编译并输出
-	let result = system('javac'. s:default_javac_args . C_option . ' ' . expand('%:p') . ' ; echo $?')
+	let result = system('javac '. s:default_javac_args . C_option . ' ' . expand('%:p') . ' ; echo $?')
 	echom result[0:-3]
 	" 编译正常则返回类路径
 	if result[-2:-2] == 0
@@ -121,7 +115,7 @@ function! JavaCompile(...)
 	return test_null_string()
 endfunction
 
-function! RunJava(...)
+function libbox#java#Run(...)
 	if &filetype !=# 'java'
 		return
 	endif
@@ -141,7 +135,8 @@ function! RunJava(...)
 	let result = findfile(substitute(GetQualified(),'\.','/','g') . '.class',expand('%:p:h') . "/**10;/")
 	" 编译
 	if !empty(C_option) || empty(result) || getftime(expand('%:p')) > getftime(result)
-		let result = JavaCompile(C_option)
+		call system('rm ' . result)
+		let result = libbox#java#Compile(C_option)
 		if result == test_null_string()
 			return
 		endif
