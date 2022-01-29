@@ -51,11 +51,16 @@ function libbox#java#GetPackage()
 endfunction
 
 function libbox#java#GetQualified()
-	if empty(GetPackage())
+	if empty(libbox#java#GetPackage())
 		return expand('%:r')
 	else
-		return GetPackage() . '.' . expand('%:r')
+		return libbox#java#GetPackage() . '.' . expand('%:r')
 	endif
+endfunction
+
+function libbox#java#Flush()
+	let b:package = libbox#java#GetPackage()
+	let b:qualified = b:package . expand('%:r')
 endfunction
 
 function libbox#java#AddHead()
@@ -81,15 +86,16 @@ function libbox#java#Compile(...)
 	if &filetype !=# "java"
 		return test_null_string()
 	endif
+	call libbox#java#Flush()
 	echo "*Java编译器"
 	let C_option = ' -d '
 	let classpath = ''
 	" 根据包确定编译目录和类路径
-	if !empty(GetPackage())
-		if expand('%:p') =~ '/.*/' . substitute(GetQualified(),'\.','/','g') . '.java'
-			let classpath = expand('%:p:h')[:len(expand('%:p:h'))-len(GetPackage())-2]
+	if !empty(libbox#java#GetPackage())
+		if expand('%:p') =~ '/.*/' . substitute(b:qualified,'\.','/','g') . '.java'
+			let classpath = expand('%:p:h')[:len(expand('%:p:h'))-len(b:package)-2]
 		else
-			echo "*您的package值 [". GetPackage() ."] 与实际目录 [" .expand('%:p:h'). "] 不符！输入回车在本目录下编译"
+			echo "*您的package值 [". b:package ."] 与实际目录 [" .expand('%:p:h'). "] 不符！输入回车在本目录下编译"
 			if getchar() != 13
 				echom "*取消编译"
 				return test_null_string()
@@ -120,6 +126,7 @@ function libbox#java#Run(...)
 		return
 	endif
 	let C_option = ""
+	let R_option = ""
 	let J_option = ""
 	" "#C"开头参数作为javac参数 "#J"开头作为java启动参数
 	for Option in a:000
@@ -132,22 +139,23 @@ function libbox#java#Run(...)
 		endif
 	endfor
 	" 寻找字节码文件
-	let result = findfile(substitute(GetQualified(),'\.','/','g') . '.class',expand('%:p:h') . "/**10;/")
+	let result = findfile(substitute(libbox#java#GetQualified(),'\.','/','g') . '.class',expand('%:p:h') . "/**4;../../../../")
 	" 编译
 	if !empty(C_option) || empty(result) || getftime(expand('%:p')) > getftime(result)
 		call system('rm ' . result)
 		let result = libbox#java#Compile(C_option)
+		sleep 3
 		if result == test_null_string()
 			return
 		endif
 	else
 	" 未编译
 		if result =~ '^/'
-			let result = result[:-len(GetQualified())-7]
+			let result = result[:-len(libbox#java#GetQualified())-7]
 		else
-			let result = (getcwd().result)[:-len(GetQualified())-7]
+			let result = (getcwd().result)[:-len(libbox#java#GetQualified())-7]
 		endif
 	endif
 	" 执行
-	execute "! echom \"*JVM 启动\" ; java -cp " . result . ' ' . s:default_java_args . J_option . GetQualified() . R_option . " ; sleep 1"
+	execute "! echom \"*JVM 启动\" ; java -cp " . result . ' ' . s:default_java_args . J_option . libbox#java#GetQualified() . R_option . " ; sleep 1"
 endfunction

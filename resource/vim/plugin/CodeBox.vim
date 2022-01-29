@@ -39,7 +39,7 @@ function s:AddHead()
 endfunction
 
 if !exists(":Compile")
-	command -nargs=* Compile call Compile(<f-args>)
+	command -nargs=* Compile call s:Compile(<f-args>)
 endif
 function s:Compile(...)
 	let C_option = ""
@@ -55,7 +55,7 @@ function s:Compile(...)
 endfunction
 
 if !exists(":Run")
-	command -nargs=* Run call Run(<f-args>)
+	command -nargs=* Run call s:Run(<f-args>)
 endif
 function s:Run(...)
 	" 文件已修改>写入
@@ -74,8 +74,8 @@ function s:Run(...)
 		endif
 		execute "! sh " . expand('%:p') . R_option
 	elseif &filetype ==# "java"
-		let C_option = "#C"
-		let J_option = "#J"
+		let C_option = ""
+		let J_option = ""
 		" "#C"开头参数作为javac参数 "#J"开头作为java启动参数
 		for Option in a:000
 			if Option =~ '^#C.\+'
@@ -86,7 +86,7 @@ function s:Run(...)
 				let R_option .= Option . ' '
 			endif
 		endfor
-		call libbox#java#Run(C_option,J_option,R_option)
+		call libbox#java#Run(J_option,R_option)
 	else
 		echo "*未知文件格式"
 	endif
