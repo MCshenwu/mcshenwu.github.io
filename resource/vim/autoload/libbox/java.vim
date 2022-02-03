@@ -31,12 +31,12 @@ function libbox#java#GetPackage()
 				let number = nextnonblank(number+1)
 			endif
 			if statu == 0
-				if line =~ '^\</\*\{1,2}'
+				if line =~ '^\s*/\*\{1,2}'
 					let statu =	1
 					let number = prevnonblank(number-1)
-				elseif line =~ '^\<package\>' . g:IDENTIFIER .'\(\.' . g:IDENTIFIER . '\)*;'
+				elseif line =~ '^\s*package\s*' . g:IDENTIFIER .'\(\.' . g:IDENTIFIER . '\)*;'
 					return line[matchend(line,'package\s*'):match(line,';')-1]
-				elseif line !~ '^\<//'
+				elseif line !~ '^\s*//'
 					return test_null_string()
 				endif
 			elseif statu == 1
@@ -60,7 +60,7 @@ endfunction
 
 function libbox#java#Flush()
 	let b:package = libbox#java#GetPackage()
-	let b:qualified = b:package . expand('%:r')
+	let b:qualified = b:package . '.' . expand('%:r')
 endfunction
 
 function libbox#java#AddHead()
@@ -91,7 +91,7 @@ function libbox#java#Compile(...)
 	let C_option = ' -d '
 	let classpath = ''
 	" 根据包确定编译目录和类路径
-	if !empty(libbox#java#GetPackage())
+	if !empty(b:package)
 		if expand('%:p') =~ '/.*/' . substitute(b:qualified,'\.','/','g') . '.java'
 			let classpath = expand('%:p:h')[:len(expand('%:p:h'))-len(b:package)-2]
 		else

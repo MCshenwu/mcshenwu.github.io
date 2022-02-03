@@ -17,8 +17,13 @@ let s:default_sh_head = ["#/bin/sh",]
 " 标识符格式
 let g:IDENTIFIER = '[a-zA-Z_\$][a-zA-Z0-9_\$]*'
 
-"添加文件头
-au BufNewFile *.java,*.sh call AddHead()
+" 文件类型映射
+augroup FileType
+	autocmd!
+	au BufNewFile,BufRead *.html inoremap < <><LEFT>
+augroup end
+" 添加文件头
+au BufNewFile *.java,*.sh,*.html call s:AddHead()
 
 function s:AddHead()
 	let number = 0
@@ -33,6 +38,8 @@ function s:AddHead()
 			call append(number,line)
 			let number += 1
 		endfor
+	elseif &filetype ==# "html"
+		call libbox#html#AddHead()
 	else
 		echo "Unknown Format"
 	endif
@@ -42,6 +49,9 @@ if !exists(":Compile")
 	command -nargs=* Compile call s:Compile(<f-args>)
 endif
 function s:Compile(...)
+	if getbufinfo(bufname('#'))[0].changed
+		write
+	endif
 	let C_option = ""
 	for Option in a:000
 		let C_option .= ' ' . Option

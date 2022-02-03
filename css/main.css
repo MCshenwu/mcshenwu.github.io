@@ -1,0 +1,14 @@
+@font-face{
+  font-family:ipix;
+  src:url("../resource/ttf/ipix_12px.ttf");
+}
+.ipix{
+  font-family:ipix;
+}
+@font-face{
+  font-family:minecraft;
+  src:url("../resource/ttf/minecraft.ttf");
+}
+.mc{
+  font-family:minecraft;
+}
