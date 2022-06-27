@@ -13,8 +13,10 @@ let s:default_java_args = ""
 let s:default_javadoc = ["@author MCSW","@version 1.0",]
 
 " 不可修改的常量
+" 标识符格式
+let s:IDENTIFIER = '[a-zA-Z_\$][a-zA-Z0-9_\$]*'
 " Java关键字
-let s:JAVA_KEYWORD = ["if","else","for","while","do","switch","case","default","try","catch","finally","break","continue","return","class","public","protected","private","static","enum","interface","extends","implements","int","short","byte","long","char","boolean","new","package","import","void","instanceof","throws","throws","abstract","float","double","native","this","super","synchronized","transient","assert","final","strictfp","goto","const","volatile"]
+let s:KEYWORD = ["if","else","for","while","do","switch","case","default","try","catch","finally","break","continue","return","class","public","protected","private","static","enum","interface","extends","implements","int","short","byte","long","char","boolean","new","package","import","void","instanceof","throws","throws","abstract","float","double","native","this","super","synchronized","transient","assert","final","strictfp","goto","const","volatile"]
 
 function libbox#java#GetPackage()
 	if &filetype ==# "java"
@@ -34,7 +36,7 @@ function libbox#java#GetPackage()
 				if line =~ '^\s*/\*\{1,2}'
 					let statu =	1
 					let number = prevnonblank(number-1)
-				elseif line =~ '^\s*package\s*' . g:IDENTIFIER .'\(\.' . g:IDENTIFIER . '\)*;'
+				elseif line =~ '^\s*package\s*' . s:IDENTIFIER .'\(\.' . s:IDENTIFIER . '\)*;'
 					return line[matchend(line,'package\s*'):match(line,';')-1]
 				elseif line !~ '^\s*//'
 					return test_null_string()
@@ -158,4 +160,8 @@ function libbox#java#Run(...)
 	endif
 	" 执行
 	execute "! echom \"*JVM 启动\" ; java -cp " . result . ' ' . s:default_java_args . J_option . libbox#java#GetQualified() . R_option . " ; sleep 1"
+endfunction
+
+function libbox#java#nextPosition(num)
+	
 endfunction

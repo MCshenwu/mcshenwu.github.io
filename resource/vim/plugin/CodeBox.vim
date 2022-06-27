@@ -14,8 +14,6 @@ let g:codebox_load = 1
 let s:default_sh_head = ["#/bin/sh",]
 
 " 不可修改的参数
-" 标识符格式
-let g:IDENTIFIER = '[a-zA-Z_\$][a-zA-Z0-9_\$]*'
 
 " 文件类型映射
 augroup FileType
