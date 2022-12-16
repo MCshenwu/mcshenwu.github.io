@@ -1,0 +1,18 @@
+span.class{ color:purple; } /* 定义修饰类：class interface enum record value（可能） sealed extends implements permits */
+span.class-name{ color:yellow; } /* 类名 */
+span.annotation{} /* 注解 */
+span.comment{ color:gray; } /* 注释 */
+span.method{} /* 修饰方法：synchronized default throws native */
+span.method-name{} /* 方法名 */
+span.package{} /* 包：package import */
+span.module{} /* 模块：opens uses with provides open export to */
+span.variable{} /* 变量名 基础变量：int byte short long char boolean float double 修饰：final volatile strictfp */
+span.identifier{} /* 标识符 */
+span.number{} /* 数字常量 */
+span.string{ color: green; } /* 字符串 */
+span.object{} /* 对象：new this super */
+span.universal{} /* abstract static final */
+span.sign{ color: white; } /* 运算符：() [] {} , + - * % / = > < ; . ? ! & | ^ ~ instanceof */
+span.flow{} /* 流程控制 assert if else for while switch do case break continue yield try catch finally throw */
+span.useless{} /* 保留关键字 goto const */
+span.generics{} /* 泛型<> 通配符 ? super extends */
