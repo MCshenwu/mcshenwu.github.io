@@ -1,6 +1,6 @@
 @font-face{
   font-family:ipix;
-  src:url("/fonts/ipix.ttf");
+  src:url("/font/ipix.ttf");
 }
 .ipix{
   font-family: ipix, serif;
@@ -8,7 +8,7 @@
 
 @font-face{
   font-family:minecraft;
-  src:url("/fonts/minecraft.ttf");
+  src:url("/font/minecraft.ttf");
 }
 .mc{
   font-family:minecraft, serif;
@@ -16,7 +16,7 @@
 
 @font-face{
     font-family:li;
-    src:url("/fonts/baoli.ttc");
+    src:url("/font/baoli.ttc");
 }
 .li{
     font-family:li, serif;
@@ -25,7 +25,7 @@
 
 @font-face{
     font-family:mono;
-    src:url("/fonts/Mono.ttf");
+    src:url("/font/Mono.ttf");
 }
 .code{
     font-family:mono, serif;
@@ -42,5 +42,10 @@ code{
 
 body{
     background-color: white;
-
+    margin: 0;
 }
+
+a:link {text-decoration:none;}
+a:visited {text-decoration:none;}
+a:hover {text-decoration:none;}
+a:active {text-decoration:none;}
